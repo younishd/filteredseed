@@ -99,7 +99,7 @@ uint64_t rand64()
 
 //this is classic FSG fastion without biome (pos/pos bastion, tells you neg/pos or pos/neg fortress)
 char netherchecker(int64_t seed, int* fortressQuadrant){
-  //return true if the nether is good (3 structures within -128 to 128 ignoring neg/neg) at 
+  //return true if the nether is good (3 structures within -128 to 128 ignoring neg/neg) at
   unsigned long modulus = 1ULL << 48;
   unsigned long AA = 341873128712;
   unsigned long BB = 132897987541;
@@ -146,7 +146,7 @@ char bastionbiome(uint64_t seed){
   int64_t fakeseed = (seed + 30084232ULL) ^ 0x5deece66dUL;
   int64_t chunkx = next(&fakeseed, 31) % 23;
   int64_t chunkz = next(&fakeseed, 31) % 23;
-  NetherGen* netherGen=create_new_nether(seed);  
+  NetherGen* netherGen=create_new_nether(seed);
   NetherBiomes biome=get_biome(netherGen,chunkx*16,0,chunkz*16);
   if (biome==BasaltDeltas){
     delete(netherGen);
@@ -575,7 +575,7 @@ int portalLoot(int64_t lower48, int px, int pz){
   if (fitness >= 5){ // around 5 is 3 iron and flint and steel, around 10 is that plus lots of OBI
     //printf("ironc: %d, obic: %d, flintc: %d, fireb: %d, lootb: %d, goldc: %d\n", ironc, obic, flintc, fireb, lootb, goldc);
     return 1;
-  }    
+  }
   return 0;
 }
 
@@ -616,7 +616,7 @@ int possible_lava(int64_t lower48, int x, int z){
   nextInt(&lakeseed, 16); //noise in Z
   nextInt(&lavaseed, 16); //noise in X
   nextInt(&lavaseed, 16); //noise in Z
-  
+
   int lakey = nextInt(&lakeseed, 256);
   int temp = nextInt(&lavaseed, 256 - 8);
   int lavay = nextInt(&lavaseed, temp + 8);
@@ -863,6 +863,7 @@ int valid_biomes(int64_t seed, int* fortressQuadrant, int filter_style, LayerSta
 
 int main () {
     uint64_t timestamp = (uint64_t) time(NULL);
+    /*
     FILE *fp = fopen("csprng.c","rb"); //Uses SHA256 of this source code for key
     char source[MAXBUFLEN + 1];
     if (fp != NULL) {
@@ -874,15 +875,32 @@ int main () {
         }
         fclose(fp);
     }
+    */
     unsigned char *salsaKey;
-    unsigned char *salsaKey2;   
+    unsigned char *salsaKey2;
     unsigned i;
     unsigned int l = gcry_md_get_algo_dlen(GCRY_MD_SHA256); /* get digest length (used later to print the result) */
 
+    /*
     gcry_md_hd_t h;
-    gcry_md_open(&h, GCRY_MD_SHA256, GCRY_MD_FLAG_SECURE); /* initialise the hash context */
-    gcry_md_write(h, source, strlen(source)); /* hash some text */
-    salsaKey = gcry_md_read(h, GCRY_MD_SHA256); /* get the result */
+    gcry_md_open(&h, GCRY_MD_SHA256, GCRY_MD_FLAG_SECURE);
+    gcry_md_write(h, source, strlen(source));
+    salsaKey = gcry_md_read(h, GCRY_MD_SHA256);
+    */
+
+
+
+    // hard-code hash value
+    char* HASH = "fc641dad7d8fec3d0ad10859a63867549ba17d218643720f2bcb1c8fdbf8f585";
+    unsigned char out[l];
+    unsigned int u;
+    for (i = 0; i < l; ++i) {
+      sscanf(HASH + i * 2, "%02x", &u);
+      out[i] = u;
+    }
+    salsaKey = out;
+
+
 
     unsigned char stampString[8];
     int64ToChar(stampString, timestamp);
@@ -934,7 +952,7 @@ int main () {
     if (filterStyle == 3){ //jungles
       biome_tolerance = 1000;
     }
-    //biome_tolerance is tricky, some lower48s will never be satisfiable so we need a steam valve, but too impatient and 
+    //biome_tolerance is tricky, some lower48s will never be satisfiable so we need a steam valve, but too impatient and
     //the heavily biome dependent filters will need to be extra lucky
     //determine these through experimentation
 
@@ -950,7 +968,7 @@ int main () {
                gcry_strerror(gcryError));
         return 1;
     }
-    
+
     gcryError = gcry_cipher_setkey(gcryCipherHd, salsaKey2, 32);
     if (gcryError)
     {
@@ -959,7 +977,7 @@ int main () {
                gcry_strerror(gcryError));
         return 1;
     }
-    
+
     if (DEBUG){
       printf("DEBUG: salsaKey2:");
       for (i = 0; i < 32; i++){
@@ -981,7 +999,7 @@ int main () {
         printf("%02x", iniVector[i]); /* print the result */
       }
     }
-    
+
     size_t txtLength = 8;
     uint64_t seed = 0;
     unsigned char * encBuffer = malloc(txtLength+1);
@@ -1042,7 +1060,7 @@ int main () {
         biome_counter += 1;
         if (biome_counter % 100 == 0){
           printf(".");
-          fflush(stdout);          
+          fflush(stdout);
         }
         if (bastionbiome(seed) == 0){
           has_lower = 0;
