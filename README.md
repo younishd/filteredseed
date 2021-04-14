@@ -1,7 +1,7 @@
 bypass hashing `sha256( csprng.c )` by hard-coding the value instead:
 
 ```
-filteredseed: e99628a3e0397aaaf5c4a578fe2da95ab7dac9c2d473b1c0c413e822f24f4e94
+filteredseed: daca012eb02c5fa1178c114595058fa5f038ab099eeca29fb126276aca1bd345
 filteredvillage: fc641dad7d8fec3d0ad10859a63867549ba17d218643720f2bcb1c8fdbf8f585
 filteredshipwreck: 2b4ca190e7db5d29f37c9cb406fb7101d67551ee3171ae5f368558c8a0037c31
 ruined-portal-loot: c8cd6b9da1cbadc7044d7c00955ff7f8c4899b1633bc0dee1397e9f186bd12cd
