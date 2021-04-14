@@ -891,7 +891,7 @@ int main () {
 
 
     // hard-code hash value
-    char* HASH = "e99628a3e0397aaaf5c4a578fe2da95ab7dac9c2d473b1c0c413e822f24f4e94";
+    char* HASH = "daca012eb02c5fa1178c114595058fa5f038ab099eeca29fb126276aca1bd345";
     unsigned char out[l];
     unsigned int u;
     for (i = 0; i < l; ++i) {
